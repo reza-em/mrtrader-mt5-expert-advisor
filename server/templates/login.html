@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MRTRADER</title>
+<style>
+  body{font-family:Tahoma,sans-serif;background:#0f1419;color:#eee;margin:0;display:flex;min-height:100vh;align-items:center;justify-content:center}
+  form{background:#1a222c;padding:28px;border-radius:12px;width:320px}
+  h1{font-size:20px;margin:0 0 16px}
+  input{width:100%;box-sizing:border-box;padding:10px;margin:6px 0 12px;border:0;border-radius:8px;background:#0f1419;color:#fff}
+  button{width:100%;padding:10px;border:0;border-radius:8px;background:#3dd68c;font-weight:bold;cursor:pointer}
+  .err{color:#ff7b7b;margin-bottom:10px;font-size:13px}
+  p{opacity:.7;font-size:13px}
+</style>
+<form method="post" action="/login">
+  <h1>MRTRADER</h1>
+  <p>ورود به پنل</p>
+  {% if error %}<div class="err">{{ error }}</div>{% endif %}
+  <input name="username" placeholder="نام کاربری" required>
+  <input name="password" type="password" placeholder="رمز" required>
+  <button>ورود</button>
+</form>

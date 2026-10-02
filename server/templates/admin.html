@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ادمین | MRTRADER</title>
+<style>
+  body{font-family:Tahoma,sans-serif;background:#0f1419;color:#eee;margin:0;padding:24px}
+  a{color:#3dd68c}
+  table{width:100%;border-collapse:collapse;background:#1a222c;border-radius:12px;overflow:hidden}
+  th,td{padding:10px 12px;text-align:right;border-bottom:1px solid #2a3440;font-size:14px}
+  .ok{color:#3dd68c} .off{color:#888} .err{color:#ff7b7b}
+  form.inline{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+  input,button{padding:8px 10px;border:0;border-radius:8px}
+  input{background:#0f1419;color:#fff}
+  button{background:#3dd68c;cursor:pointer}
+  .del{background:#c45c5c;color:#fff}
+  header{display:flex;justify-content:space-between;align-items:center}
+</style>
+<header>
+  <h1>کاربرها</h1>
+  <div>{{ me.username }} · <a href="/logout">خروج</a></div>
+</header>
+<form class="inline" method="post" action="/admin/users">
+  <input name="username" placeholder="یوزر جدید" required>
+  <input name="password" placeholder="رمز ورود پنل" required>
+  <button>اضافه کن</button>
+</form>
+<table>
+  <tr><th>یوزر</th><th>آلپاری</th><th>سرور</th><th>وضعیت</th><th>آخرین ضربان</th><th></th></tr>
+  {% for x in users %}
+  <tr>
+    <td>{{ x.username }}{% if x.is_admin %} (admin){% endif %}</td>
+    <td>{{ x.alpari_login or '—' }}</td>
+    <td>{{ x.alpari_server or '—' }}</td>
+    <td class="{% if x.status=='running' %}ok{% elif x.status=='error' %}err{% else %}off{% endif %}">{{ x.status or '—' }}</td>
+    <td>{{ x.last_heartbeat or '—' }}</td>
+    <td>
+      {% if not x.is_admin %}
+      <form method="post" action="/admin/users/{{ x.id }}/delete" onsubmit="return confirm('حذف شود؟')">
+        <button class="del">حذف</button>
+      </form>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+<p>هر یوزر با حساب خودش وارد /me می‌شود، اطلاعات آلپاری را می‌گذارد و سیستم را روشن می‌کند.</p>

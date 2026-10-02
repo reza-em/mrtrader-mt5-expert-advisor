@@ -1,0 +1,12 @@
+services:
+  mrtrader:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SECRET_KEY: ${SECRET_KEY:?set SECRET_KEY in .env}
+      ADMIN_USER: ${ADMIN_USER:-admin}
+      ADMIN_PASS: ${ADMIN_PASS:?set ADMIN_PASS in .env}
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

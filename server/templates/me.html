@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سیستم من | MRTRADER</title>
+<style>
+  body{font-family:Tahoma,sans-serif;background:#0f1419;color:#eee;margin:0;padding:24px;max-width:720px}
+  a{color:#3dd68c}
+  .card{background:#1a222c;padding:20px;border-radius:12px;margin:12px 0}
+  label{display:block;font-size:13px;opacity:.8;margin-top:10px}
+  input{width:100%;box-sizing:border-box;padding:10px;margin-top:4px;border:0;border-radius:8px;background:#0f1419;color:#fff}
+  button{padding:10px 16px;border:0;border-radius:8px;margin:12px 6px 0 0;cursor:pointer}
+  .go{background:#3dd68c} .stop{background:#c45c5c;color:#fff}
+  .ok{color:#3dd68c} .err{color:#ff7b7b} .off{color:#aaa}
+  pre{background:#0f1419;padding:12px;border-radius:8px;overflow:auto;font-size:12px;min-height:120px;direction:ltr;text-align:left}
+  header{display:flex;justify-content:space-between}
+</style>
+<header>
+  <h1>سیستم {{ me.username }}</h1>
+  <a href="/logout">خروج</a>
+</header>
+<div class="card">
+  وضعیت:
+  <b class="{% if bot.status=='running' %}ok{% elif bot.status=='error' %}err{% else %}off{% endif %}">
+    {{ bot.status }}
+  </b>
+  {% if bot.last_error %}<div class="err">{{ bot.last_error }}</div>{% endif %}
+</div>
+<form class="card" method="post" action="/me/save">
+  <h3>اتصال آلپاری / متاتریدر</h3>
+  <label>Login</label>
+  <input name="alpari_login" value="{{ bot.alpari_login or '' }}" placeholder="مثلا 12345678" required>
+  <label>Password حساب معاملاتی</label>
+  <input name="alpari_password" type="password" placeholder="{% if bot.alpari_password_enc %}ذخیره شده — برای تغییر پر کن{% else %}رمز آلپاری{% endif %}">
+  <label>Server</label>
+  <input name="alpari_server" value="{{ bot.alpari_server or '' }}" placeholder="مثلا Alpari-MT5-Demo" required>
+  <label>نمادها</label>
+  <input name="symbols" value="{{ bot.symbols or 'XAUUSD,EURUSD' }}">
+  <button class="go">ذخیره</button>
+</form>
+<div class="card">
+  <form method="post" action="/me/start" style="display:inline">
+    <button class="go">راه‌اندازی سیستم</button>
+  </form>
+  <form method="post" action="/me/stop" style="display:inline">
+    <button class="stop">توقف</button>
+  </form>
+</div>
+<div class="card">
+  <h3>لاگ این یوزر</h3>
+  <pre>{{ log or '(خالی)' }}</pre>
+</div>
+<script>setTimeout(()=>location.reload(), 15000)</script>
